@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/petite-vue" defer init></script>
+  </head>
+
+  <body v-scope="dataset()">
+    <input v-model="input" />
+
+    <p>
+      <input type="radio" name="r" v-model="ra" value="red" />あ<br />
+      <input type="radio" name="r" v-model="ra" value="blue" />い<br />
+      <input type="radio" name="r" v-model="ra" value="green" />う<br />
+      <input type="radio" name="r" v-model="ra" value="yellow" />え<br />
+    </p>
+
+    <p v-bind:style="{ backgroundColor: ra }" :class="myStyle">{{ message }} {{ input }} {{ ra }}</p>
+
+    <p @click="show = !show">{{show ? '非表示' : '表示'}}</p>
+    <ul v-if="show">
+      <li v-for="item of list">{{ item }}</li>
+    </ul>
+
+    <button @click="func">ボタン</button>
+  </body>
+
+  <script>
+    function dataset() {
+      return {
+        show: false,
+        list: ['犬', '猿', '雉'],
+        myStyle: '',
+        ra: '',
+        message: 'Hello',
+        input: '入力してください',
+        func() {
+          console.log(this.ra);
+        }
+      };
+    }
+  </script>
+</html>

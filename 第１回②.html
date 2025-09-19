@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>ポケモン図鑑</title>
+    <script src="https://unpkg.com/petite-vue" defer init></script>
+  </head>
+  <body v-scope="dataset()">
+    <table border="1">
+      <tr>
+        <th>名前</th>
+        <th>タイプ</th>
+        <th>重さ (kg)</th>
+        <th>特性</th>
+      </tr>
+      <tr v-for="item of list">
+        <td>{{item.name}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.weight}}</td>
+        <td>{{item.ability}}</td>
+      </tr>
+    </table>
+    <from @submit.privent="">
+      <label>name:<input v-model="" /></label><be /> <label for="type">type:</label>
+      <select id="type" v-model="">
+        <option>ほのお</option>
+        <option>みず</option>
+        <option>でんき</option>
+        <option>あく</option>
+        <option>エスパー</option>
+      </select>
+      <br />
+      <label>weight:<input /></label><br />
+      <label>ablity:<input /></label><br />
+      <button>登録</button>
+    </from>
+  </body>
+  <script>
+    function dataset() {
+      return {
+        name: '',
+        type: 'ほのお',
+        w: '',
+        abi: '',
+        addItem() {
+          const item = { name: this.name, type: this.type, weight: this.w, ability: this.abi };
+          this.list.push(item);
+        },
+        list: [
+          { name: 'ガーディ', type: 'ほのお', weight: 19.0, ability: 'もらいび' },
+          { name: 'コイキング', type: 'みず', weight: 10.0, ability: 'すいすい' },
+          { name: 'コダック', type: 'みず', weight: 19.6, ability: 'しめつけ' },
+          { name: 'サンダース', type: 'でんき', weight: 24.5, ability: 'ちくでん' },
+          { name: 'ピカチュウ', type: 'でんき', weight: 6.0, ability: 'せいでんき' },
+          { name: 'ヒトカゲ', type: 'ほのお', weight: 8.5, ability: 'もうか' },
+          { name: 'ブースター', type: 'ほのお', weight: 25.0, ability: 'もらいび' },
+          { name: 'ミュウ', type: 'エスパー', weight: 4.0, ability: 'シンクロ' }
+        ]
+      };
+    }
+  </script>
+</html>
