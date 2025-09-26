@@ -1,0 +1,52 @@
+{
+  "list": [
+    {
+      "name": "ガーディ",
+      "type": "ほのお",
+      "weight": 19.0,
+      "ability": "もらいび"
+    },
+    {
+      "name": "コイキング",
+      "type": "みず",
+      "weight": 10.0,
+      "ability": "すいすい"
+    },
+    {
+      "name": "コダック",
+      "type": "みず",
+      "weight": 19.6,
+      "ability": "しめつけ"
+    },
+    {
+      "name": "サンダース",
+      "type": "でんき",
+      "weight": 24.5,
+      "ability": "ちくでん"
+    },
+    {
+      "name": "ピカチュウ",
+      "type": "でんき",
+      "weight": 6.0,
+      "ability": "せいでんき"
+    },
+    {
+      "name": "ヒトカゲ",
+      "type": "ほのお",
+      "weight": 8.5,
+      "ability": "もうか"
+    },
+    {
+      "name": "ブースター",
+      "type": "ほのお",
+      "weight": 25.0,
+      "ability": "もらいび"
+    },
+    {
+      "name": "ミュウ",
+      "type": "エスパー",
+      "weight": 4.0,
+      "ability": "シンクロ"
+    }
+  ]
+}

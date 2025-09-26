@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fetch API</title>
+    <style>
+      table,
+      th,
+      td {
+        border: solid black 1px;
+        border-collapse: collapse;
+        padding: 5px 10px;
+      }
+    </style>
+    <script src="https://unpkg.com/petite-vue" defer init></script>
+  </head>
+
+  <body v-scope="dataset()">
+    <p>
+      <button @click="fetchData">データ取得</button>
+    </p>
+    <table v-if="data">
+      <tr>
+        <th>名前</th>
+        <th>タイプ</th>
+        <th>重さ (kg)</th>
+        <th>特性</th>
+      </tr>
+      <tr v-for="item in data" :key="item.name">
+        <td>{{ item.name }}</td>
+        <td>{{ item.type }}</td>
+        <td>{{ item.weight }}</td>
+        <td>{{ item.ability }}</td>
+      </tr>
+    </table>
+  </body>
+  <script>
+    function dataset() {
+      return {
+        data: false,
+        async fetchData() {
+          try {
+            const res = await fetch('data.json');
+            const json = await res.json();
+            this.data = json.list;
+          } catch (e) {}
+        }
+      };
+    }
+  </script>
+</html>
