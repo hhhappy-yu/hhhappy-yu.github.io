@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>11-ex-2</title>
+    <script src="https://unpkg.com/petite-vue" defer init></script>
+    <!-- getYMD.js を読み込む -->
+    <script src="getYMD.js"></script>
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+      table {
+        margin-top: 1em;
+        width: 100%;
+      }
+      table,
+      td,
+      th {
+        border: solid 1px darkgreen;
+        border-collapse: collapse;
+      }
+      th {
+        background-color: darkgreen;
+        color: white;
+        border-color: white;
+        padding: 0 5px;
+      }
+      td {
+        padding: 4px;
+      }
+    </style>
+  </head>
+
+  <body v-cloak v-scope="dataset()">
+    <h1>NHK番組表</h1>
+
+    <label>
+      地域：
+      <select v-model="area">
+        <option value="130">東京</option>
+        <option value="270">大阪</option>
+      </select>
+    </label>
+
+    <label>
+      チャンネル：
+      <select v-model="service">
+        <option value="g1">NHK 総合1</option>
+        <option value="s1">NHK BS1</option>
+        <option value="r3">NHK FM</option>
+      </select>
+    </label>
+
+    <button @click="getProgramList">番組表取得</button>
+
+    <table v-if="list && list.length > 0">
+      <tr>
+        <th>時刻</th>
+        <th>タイトル</th>
+        <th>内容</th>
+      </tr>
+      <tr v-for="(item, index) in list" :key="item.id">
+        <td>{{ formatTime(index) }}</td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.content }}</td>
+      </tr>
+    </table>
+  </body>
+
+  <script>
+    function dataset() {
+      return {
+        list: [],
+        area: '130', // デフォルトは東京
+        service: 'g1', // デフォルトは総合1
+        apikey: '5HTmUlK70S3OBQKue3pArH11OS0h2kAZ',
+
+        async getProgramList() {
+          try {
+            const ymd = getYMD(); // 今日の日付 (yyyy-mm-dd)
+            const url = `https://api.nhk.or.jp/v2/pg/list/${this.area}/${this.service}/${ymd}.json?key=${this.apikey}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            this.list = data.list[this.service] || [];
+          } catch (err) {
+            console.error('取得失敗:', err);
+            this.list = [];
+          }
+        },
+
+        // 時刻整形 (例: "2025-10-03T08:00:00+09:00" → "08:00")
+        formatTime(i) {
+          const timeStr = this.list[i].start_time;
+          const parts = timeStr.split('T'); // ["2025-10-03", "08:00:00+09:00"]
+          const hm = parts[1].split(':'); // ["08", "00", "00+09:00"]
+          return hm[0] + ':' + hm[1]; // "08:00"
+        }
+      };
+    }
+  </script>
+</html>
