@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>クライアントサイド</title>
+    <script src="https://unpkg.com/petite-vue" defer init></script>
+  </head>
+
+  <body v-scope="dataset()">
+    <p>
+      <button @click="getData">GET</button>
+    </p>
+    <p v-if="data">{{data}}</p>
+    <p v-else>レスポンスデータに置き換わります</p>
+  </body>
+
+  <script>
+    function dataset() {
+      return {
+        data: false,
+
+        // GETリクエスト（クエリー）
+        async getData() {
+          // 自前のAPサーバーからfetchしてみる
+          const res = await fetch('/api');
+          this.data = (await res.json()).message;
+          console.log(this.data.message);
+        }
+      };
+    }
+  </script>
+</html>
