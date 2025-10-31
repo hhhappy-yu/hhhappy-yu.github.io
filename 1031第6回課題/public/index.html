@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>クライアントサイド</title>
+    <script src="https://unpkg.com/petite-vue" defer init></script>
+  </head>
+
+  <body v-scope="dataset()">
+    <p>
+      <label for="name">名前：</label>
+      <input id="name" v-model="name" /><br />
+      <label for="rank">ランク：</label>
+      <select id="rank" v-model="rank">
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+    </p>
+    <p>
+      <button @click="getData">GET</button>
+      <button @click="postData">POST</button>
+      <button @click="putData">PUT</button>
+      <button @click="deleteData">DELETE</button>
+    </p>
+    <p>{{data}}</p>
+  </body>
+
+  <script>
+    function dataset() {
+      return {
+        data: 'レスポンスデータに置き換わります',
+        name: '',
+        rank: '',
+
+        // GETリクエスト
+        async getData() {
+          const res = await fetch('/api');
+          const data = await res.json();
+          this.data = JSON.stringify(data, null, 2);
+        },
+
+        // POSTリクエスト
+        async postData() {
+          const res = await fetch('/api', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: this.name, rank: this.rank })
+          });
+          const json = await res.json();
+          this.data = JSON.stringify(json, null, 2);
+        },
+
+        // PUTリクエスト
+        async putData() {
+          const res = await fetch('/api', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: this.name, rank: this.rank })
+          });
+          const json = await res.json();
+          this.data = JSON.stringify(json, null, 2);
+        },
+
+        // DELETEリクエスト
+        async deleteData() {
+          const res = await fetch('/api', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: this.name, rank: this.rank })
+          });
+          const json = await res.json();
+          this.data = JSON.stringify(json, null, 2);
+        }
+      };
+    }
+  </script>
+</html>
