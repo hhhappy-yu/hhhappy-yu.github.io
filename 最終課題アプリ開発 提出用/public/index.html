@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>保育士間 情報共有アプリ</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #f0f4f8;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 600px;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+
+      button {
+        margin-top: 15px;
+        padding: 10px 15px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+
+      .result {
+        background: #fff3cd;
+        padding: 15px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>保育士間 情報共有</h1>
+
+    <div class="card">
+      <label>クラス</label>
+      <select id="class">
+        <option>うさぎ組</option>
+        <option>ぱんだ組</option>
+        <option>きりん組</option>
+      </select>
+
+      <label>園児名</label>
+      <select id="child">
+        <option>〇〇</option>
+        <option>△△</option>
+        <option>□□</option>
+      </select>
+
+      <label>共有内容（複数選択可）</label>
+      <input type="checkbox" value="体調不良" />体調不良<br />
+      <input type="checkbox" value="迎え時間変更" />迎え時間変更<br />
+      <input type="checkbox" value="持ち物連絡" />持ち物連絡<br />
+      <input type="checkbox" value="その他" />その他<br />
+
+      <label>詳細内容</label>
+      <textarea id="detail" rows="5" style="width: 100%"></textarea>
+
+      <button onclick="send()">共有する</button>
+    </div>
+
+    <div id="output" class="result" style="display: none"></div>
+
+    <script>
+      const reports = [];
+
+      function send() {
+        const className = document.getElementById('class').value;
+        const childName = document.getElementById('child').value;
+        const detail = document.getElementById('detail').value;
+
+        const checks = document.querySelectorAll("input[type='checkbox']:checked");
+        let infos = [];
+        checks.forEach((c) => infos.push(c.value));
+
+        // 現在時刻を取得
+        const now = new Date();
+        const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+        const report = {
+          className,
+          childName,
+          infos,
+          detail,
+          time
+        };
+
+        reports.push(report);
+        render();
+      }
+
+      function render() {
+        const output = document.getElementById('output');
+        output.style.display = 'block';
+
+        // 今日の日付
+        const today = new Date();
+        const dateStr = today.getFullYear() + '年' + (today.getMonth() + 1) + '月' + today.getDate() + '日';
+
+        let html = `<h2>${dateStr} の共有内容一覧</h2>`;
+
+        reports.forEach((r, index) => {
+          html += `
+        <div style="background:white; padding:10px; margin-bottom:10px; border-radius:6px;">
+          <p><strong>${index + 1}件目（${r.time}）</strong></p>
+          <p>クラス：${r.className}</p>
+          <p>園児：${r.childName}</p>
+          <p>内容：${r.infos.join('、')}</p>
+          <p>詳細：${r.detail}</p>
+        </div>
+      `;
+        });
+
+        output.innerHTML = html;
+      }
+    </script>
+  </body>
+</html>
